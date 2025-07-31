@@ -20,7 +20,7 @@ export function useSuperhero(params: Params) {
     queryKey: superheroKeys.superhero(id ?? ''),
     queryFn: id
       ? async () => {
-          const res = await fetch(
+          const response = await fetch(
             `${config.apiHost}/${config.apiToken}/${id}`,
             {
               headers: {
@@ -30,14 +30,14 @@ export function useSuperhero(params: Params) {
           );
 
           const data: ResponseSuccess<Superhero> | ResponseError =
-            await res.json();
+            await response.json();
 
-          if (!res.ok || data.response === 'error') {
+          if (!response.ok || data.response === 'error') {
             const errorMessage =
               data.response === 'error' ? data.error : 'Unknown error';
 
             throw new Error(
-              `Error ${res.status}: ${res.statusText} - ${errorMessage}`
+              `Error ${response.status}: ${response.statusText} - ${errorMessage}`
             );
           }
 
