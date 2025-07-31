@@ -1,10 +1,9 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import SearchInput from '~pages/main/ui/SearchInput.tsx';
+import SuperheroList from '~pages/main/ui/SuperheroList.tsx';
 
 import { superheroApi } from '~entities/superhero';
-
-import { Img } from '~shared/components/Img.tsx';
 
 import { useDebounceValue } from 'usehooks-ts';
 
@@ -32,7 +31,7 @@ export function MainPage() {
   const showError = error && !showNotFound;
 
   return (
-    <main className="mx-auto my-4 h-full max-w-2xl rounded-2xl bg-gray-200 p-6">
+    <section className="mx-auto my-4 h-full max-w-2xl rounded-2xl bg-gray-200 p-6">
       <SearchInput query={query} setQuery={setQuery} />
 
       {isLoading && (
@@ -57,33 +56,10 @@ export function MainPage() {
           <p className="mb-4 text-sm text-gray-600">
             Found {total} heroes {foundFor && `for "${foundFor}"`}
           </p>
-          <ul className="grid h-[500px] gap-4 overflow-auto">
-            {superheroes.map((hero) => (
-              <li key={hero.id}>
-                <Link
-                  to={`/${hero.id}`}
-                  className="block rounded-md border bg-white p-4 shadow-md transition hover:opacity-90 hover:shadow-lg"
-                >
-                  <div className="flex items-center gap-4">
-                    <Img
-                      src={hero.image?.url}
-                      alt={hero.name}
-                      className="h-16 w-16 rounded-full border object-cover"
-                    />
 
-                    <div>
-                      <h2 className="text-lg font-semibold">{hero.name}</h2>
-                      <p className="text-sm text-gray-600">
-                        {hero.biography?.['full-name'] || 'Unknown'}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <SuperheroList superheroes={superheroes} />
         </>
       )}
-    </main>
+    </section>
   );
 }
