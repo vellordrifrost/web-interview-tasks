@@ -15,30 +15,35 @@ export function useSuperhero(params: Params) {
   const { id } = params;
 
   return useQuery({
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000, // 5 минут данные считаются свежими
     queryKey: superheroKeys.superhero(id ?? ''),
     queryFn: id
       ? async () => {
-          const response: ResponseSuccess<Superhero> = await fetch(
-            `${config.apiHost}/api/${config.apiToken}/${id}`,
+          const res = await fetch(
+            `${config.apiHost}/${config.apiToken}/${id}`,
             {
               headers: {
                 'Content-Type': 'application/json',
               },
             }
-          ).then(async (res) => {
-            if (!res.ok) {
-              const error: ResponseError = await res.json();
+          );
 
-              throw new Error(
-                `Error ${res.status}: ${res.statusText} - ${error.error}`
-              );
-            }
+          const data: ResponseSuccess<Superhero> | ResponseError =
+            await res.json();
 
-            return res.json();
-          });
+          if (!res.ok || data.response === 'error') {
+            const errorMessage =
+              data.response === 'error' ? data.error : 'Unknown error';
 
-          return response;
+            throw new Error(
+              `Error ${res.status}: ${res.statusText} - ${errorMessage}`
+            );
+          }
+
+          return data;
         }
       : skipToken,
+    retry: false,
   });
 }

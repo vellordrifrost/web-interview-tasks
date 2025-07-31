@@ -15,7 +15,7 @@ export default defineConfig(() => {
       port: 3000,
       proxy: {
         '/api-proxy': {
-          target: 'https://superheroapi.com',
+          target: 'https://superheroapi.com/api',
           rewrite: (path) => path.replace(/^\/api-proxy/, ''),
           changeOrigin: true,
           cookieDomainRewrite: '',

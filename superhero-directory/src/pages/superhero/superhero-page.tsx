@@ -2,6 +2,8 @@ import { useParams } from 'react-router-dom';
 
 import { superheroApi } from '~entities/superhero';
 
+import { Img } from '~shared/components/Img.tsx';
+
 export function SuperheroPage() {
   const { id } = useParams();
   const {
@@ -23,7 +25,7 @@ export function SuperheroPage() {
   return (
     <article className="mx-auto rounded-md bg-white p-6 shadow-md">
       <header className="mb-6">
-        <img
+        <Img
           src={superhero.image.url}
           alt={superhero.name}
           className="mx-auto mb-4 block rounded-md shadow-md"

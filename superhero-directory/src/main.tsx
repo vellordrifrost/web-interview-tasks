@@ -2,10 +2,12 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import { Layout } from '~app/layout';
+import { Providers } from '~app/providers';
+
+import { MainPage } from '~pages/main/main-page.tsx';
 import { SuperheroPage } from '~pages/superhero/superhero-page';
 
-import { Layout } from './app/layout/layout';
-import { Providers } from './app/providers';
 import './root.css';
 
 function App() {
@@ -14,20 +16,7 @@ function App() {
       <BrowserRouter>
         <Layout>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <h1 className="font-display text-center text-4xl">
-                    Superhero Directory
-                  </h1>
-                  <p>
-                    Welcome to the Superhero Directory! Here you can find
-                    information about your favorite superheroes.
-                  </p>
-                </>
-              }
-            />
+            <Route path="/" element={<MainPage />} />
             <Route path=":id" element={<SuperheroPage />} />
           </Routes>
         </Layout>
